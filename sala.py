@@ -41,7 +41,7 @@ class Sala(Thread):
 
             print(pessoa.nome + ' saiu da sala')
             self.lock.notify()
-            print(pessoa.nome + ' acordou uma das pessoas.')
+            print(pessoa.nome + ' acordou uma das pessoas da fila de entrada.')
 
             if self.sala_esta_cheia:
                 self.sala_esta_cheia = False

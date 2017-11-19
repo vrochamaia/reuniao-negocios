@@ -7,6 +7,7 @@ import time
 class Pessoa(Thread):
 
     lock = threading.Condition()
+
     tempo_entrada_sala = 0
     tempo_entrada_fila = 0
     tempo_total_na_sala = 0
@@ -24,7 +25,7 @@ class Pessoa(Thread):
         self.tempo_entrada_fila = time.time()
         if self.sala.inserir_pessoa_sala(self):
             self.tempo_total_na_fila = time.time() - self.tempo_entrada_fila
-            print(self.nome + ' entrou na sala')
+            print(self.nome + ' ('+self.sexo+') entrou na sala')
             self.tempo_entrada_sala = time.time()
             self.trocarCartoes()
 
@@ -40,10 +41,11 @@ class Pessoa(Thread):
 
                 for pessoa in self.sala.pessoas_na_sala:
                     if pessoa.cartao_pessoal not in self.cartoes_recebidos and pessoa != self:
-                        time.sleep(2)
                         self.cartoes_recebidos.append(pessoa.cartao_pessoal)
                         pessoa.cartoes_recebidos.append(self.cartao_pessoal)
+                        time.sleep(2)
                         pessoa.lock.notify()
+
                         if self.condicoes_atentidas():
                             condicao_atendida = True
                             break
@@ -52,6 +54,9 @@ class Pessoa(Thread):
                     print(self.nome + " foi dormir porque não conseguiu os cartões necessários")
                     self.lock.wait()
                     print(self.nome + " foi acordada para continuar troca de cartões")
+
+                    if self.condicoes_atentidas():
+                        continuar_loop = False
                 else:
                     continuar_loop = False
 
@@ -63,9 +68,9 @@ class Pessoa(Thread):
         cartao_feminino = False
 
         for cartao_visita in self.cartoes_recebidos:
-            if cartao_visita.pessoa.sexo == "M":
+            if cartao_visita.pessoa.sexo == "H":
                 cartao_masculino = True
-            if cartao_visita.pessoa.sexo == "F":
+            if cartao_visita.pessoa.sexo == "M":
                 cartao_feminino = True
 
         # verificar se ja tem 3 cartões e pelo menos um de cada sexo, se sim, sai da sala, se não, dorme

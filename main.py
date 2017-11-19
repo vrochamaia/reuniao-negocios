@@ -7,7 +7,7 @@ import string
 import os
 
 pessoas_nomes = string.ascii_letters[0:20]
-generos = ["M", "F"]
+generos = ["H", "M"]
 pessoas_criadas = []
 pessoas_sairam_da_sala = []
 quantidade_pessoas_geradas = 0
@@ -22,7 +22,6 @@ QUANTIDADE_MAXIMA_PESSOAS = 20
 # "Abrindo" a sala
 sala = Sala()
 sala.start()
-
 
 def gerar_pessoas():
 
@@ -46,29 +45,32 @@ gerar_pessoas()
 while True:
     if time.time() >= TEMPO_MAXIMO_EXECUCAO:
 
-        # Pegar as pessoas que sairam e as que estao la dentro para fazer a listagem de cartoes que cada uma pegou
-        # e dizer o tempo em que ela ficou na sala.
-        # Exibir o tempo médio em que a pessoa fica na fila de entrada e o tempo médio dentro da sala
-
         sala.fechar_sala()
         print("--------------------------------||---------------- RESUMO -------------------||------------------------")
 
         tempo_total_na_sala = 0
         tempo_total_na_fila = 0
 
-        for pessoa in sala.pessoas_sairam_da_sala:
-            print('\nCartões recebidos pela pessoa '+pessoa.nome+':')
-            print(pessoa.relatorio())
-            tempo_total_na_sala += pessoa.tempo_total_na_sala
-            tempo_total_na_fila += pessoa.tempo_total_na_fila
+        if len(sala.pessoas_sairam_da_sala) > 0:
 
-        quantidade_pessoas = len(sala.pessoas_sairam_da_sala)
+            for pessoa in sala.pessoas_sairam_da_sala:
+                print('\nCartões recebidos pela pessoa '+pessoa.nome+':')
+                print(pessoa.relatorio())
+                tempo_total_na_sala += pessoa.tempo_total_na_sala
+                tempo_total_na_fila += pessoa.tempo_total_na_fila
 
-        tempo_medio_na_sala = round(tempo_total_na_sala / quantidade_pessoas, 2)
-        tempo_medio_na_fila = round(tempo_total_na_fila / quantidade_pessoas, 2)
+            quantidade_pessoas = len(sala.pessoas_sairam_da_sala)
 
-        print("\nTempo médio de cada pessoa na sala: "+str(tempo_medio_na_sala)+" segundos")
-        print("Tempo médio de espera na fila de entrada: "+str(tempo_medio_na_fila)+" segundos")
+            tempo_medio_na_sala = round(tempo_total_na_sala / quantidade_pessoas, 2)
+            tempo_medio_na_fila = round(tempo_total_na_fila / quantidade_pessoas, 2)
+
+            print("\nTempo médio de cada pessoa na sala: "+str(tempo_medio_na_sala)+" segundos")
+            print("Tempo médio de espera na fila de entrada: "+str(tempo_medio_na_fila)+" segundos")
+            print('Quantidade de pessoas que não conseguiram sair da sala: '+str(len(sala.pessoas_na_sala)))
+
+        else:
+            print('Nenhuma pessoa conseguiu sair da sala')
+
         os._exit(1)
 
 
