@@ -6,6 +6,7 @@ import threading
 import string
 import os
 
+# a - t
 pessoas_nomes = string.ascii_letters[0:20]
 generos = ["H", "M"]
 pessoas_criadas = []
@@ -18,10 +19,10 @@ tempo_inicio_script = time.time()
 TEMPO_MAXIMO_EXECUCAO = tempo_inicio_script + 60 * 2
 QUANTIDADE_MAXIMA_PESSOAS = 20
 
-
 # "Abrindo" a sala
 sala = Sala()
 sala.start()
+
 
 def gerar_pessoas():
 

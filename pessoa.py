@@ -27,9 +27,9 @@ class Pessoa(Thread):
             self.tempo_total_na_fila = time.time() - self.tempo_entrada_fila
             print(self.nome + ' ('+self.sexo+') entrou na sala')
             self.tempo_entrada_sala = time.time()
-            self.trocarCartoes()
+            self.trocar_cartoes()
 
-    def trocarCartoes(self):
+    def trocar_cartoes(self):
         print("Troca de cartoes iniciada pela pessoa "+self.nome)
 
         with self.lock:
